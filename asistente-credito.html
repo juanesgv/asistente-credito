@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente de Crédito Taxi | Clave 2000</title>
+    <meta name="description" content="Encuentra el mejor crédito para tu taxi en Colombia. Proceso rápido, sin complicaciones.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           VARIABLES CSS - Sistema de diseño
+           ============================================ */
+        :root {
+            /* Colores principales - Estilo Fintech */
+            --color-primary: #1E3A8A;
+            --color-primary-dark: #1E40AF;
+            --color-primary-light: #3B82F6;
+
+            /* Colores de acento - CTA */
+            --color-cta: #10B981;
+            --color-cta-hover: #059669;
+            --color-cta-light: #D1FAE5;
+
+            /* Escala de grises */
+            --color-white: #FFFFFF;
+            --color-gray-50: #F9FAFB;
+            --color-gray-100: #F3F4F6;
+            --color-gray-200: #E5E7EB;
+            --color-gray-300: #D1D5DB;
+            --color-gray-400: #9CA3AF;
+            --color-gray-500: #6B7280;
+            --color-gray-600: #4B5563;
+            --color-gray-700: #374151;
+            --color-gray-800: #1F2937;
+            --color-gray-900: #111827;
+
+            /* Sombras */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+            /* Radios */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+
+            /* Tipografía */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+            /* Transiciones */
+            --transition-fast: 150ms ease;
+            --transition-normal: 300ms ease;
+            --transition-slow: 500ms ease;
+
+            /* Z-index */
+            --z-base: 1;
+            --z-above: 10;
+            --z-modal: 100;
+            --z-toast: 1000;
+        }
+
+        /* ============================================
+           RESET Y BASE
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            line-height: 1.6;
+            color: var(--color-gray-800);
+        }
+
+        /* ============================================
+           CONTENEDOR PRINCIPAL
+           ============================================ */
+        .asistente-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--color-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ============================================
+           HEADER / BARRA DE PROGRESO
+           ============================================ */
+        .asistente-header {
+            background: var(--color-gray-50);
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--color-gray-100);
+        }
+
+        .asistente-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-size: 20px;
+        }
+
+        .brand-text {
+            font-size: 14px;
+            color: var(--color-gray-500);
+            font-weight: 500;
+        }
+
+        .brand-text strong {
+            display: block;
+            color: var(--color-primary);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        /* Barra de progreso */
+        .progress-container {
+            position: relative;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-step {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .progress-percentage {
+            font-size: 12px;
+            color: var(--color-gray-500);
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: var(--color-gray-200);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+            border-radius: var(--radius-full);
+            transition: width var(--transition-slow);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255,255,255,0.3) 50%,
+                transparent 100%
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* ============================================
+           CONTENIDO - PASOS
+           ============================================ */
+        .asistente-content {
+            padding: 32px 24px;
+            min-height: 400px;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn var(--transition-normal);
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Títulos y descripciones */
+        .step-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-gray-900);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .step-subtitle {
+            font-size: 15px;
+            color: var(--color-gray-500);
+            margin-bottom: 28px;
+        }
+
+        /* ============================================
+           OPCIONES DE RESPUESTA
+           ============================================ */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            background: var(--color-white);
+            border: 2px solid var(--color-gray-200);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-align: left;
+            width: 100%;
+        }
+
+        .option-card:hover {
+            border-color: var(--color-primary-light);
+            background: var(--color-gray-50);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .option-card:active {
+            transform: translateY(0);
+        }
+
+        .option-card.selected {
+            border-color: var(--color-primary);
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        }
+
+        .option-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-gray-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            transition: all var(--transition-fast);
+        }
+
+        .option-card:hover .option-icon {
+            background: var(--color-primary-light);
+            color: var(--color-white);
+        }
+
+        .option-card.selected .option-icon {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-gray-800);
+            margin-bottom: 2px;
+        }
+
+        .option-description {
+            font-size: 13px;
+            color: var(--color-gray-500);
+        }
+
+        .option-check {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--color-gray-300);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all var(--transition-fast);
+        }
+
+        .option-card.selected .option-check {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        /* ============================================
+           BOTONES
+           ============================================ */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-cta) 0%, var(--color-cta-hover) 100%);
+            color: var(--color-white);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            background: var(--color-gray-300);
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--color-white);
+            color: var(--color-gray-700);
+            border: 2px solid var(--color-gray-200);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-gray-300);
+            background: var(--color-gray-50);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* ============================================
+           PANTALLA DE RESULTADOS
+           ============================================ */
+        .result-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .result-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .result-illustration.alto {
+            background: linear-gradient(135deg, var(--color-cta-light) 0%, #A7F3D0 100%);
+        }
+
+        .result-illustration.medio {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+        }
+
+        .result-illustration.bajo {
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+        }
+
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-badge.alto {
+            background: var(--color-cta-light);
+            color: var(--color-cta-hover);
+        }
+
+        .result-badge.medio {
+            background: #FEF3C7;
+            color: #B45309;
+        }
+
+        .result-badge.bajo {
+            background: #E0E7FF;
+            color: var(--color-primary);
+        }
+
+        .result-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--color-gray-900);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .result-description {
+            font-size: 15px;
+            color: var(--color-gray-600);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        /* Lista de beneficios */
+        .benefits-list {
+            text-align: left;
+            background: var(--color-gray-50);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .benefits-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            margin-bottom: 12px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--color-gray-600);
+            margin-bottom: 10px;
+        }
+
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--color-cta);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-size: 12px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ============================================
+           FORMULARIO DE CONTACTO (Resultado)
+           ============================================ */
+        .contact-form {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .form-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-gray-800);
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-size: 15px;
+            border: 2px solid var(--color-gray-200);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-primary-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-gray-400);
+        }
+
+        /* ============================================
+           OPCIONES BINARIAS (Sí/No)
+           ============================================ */
+        .binary-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .binary-btn {
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* ============================================
+           OPCIONES DE PAGO (Cards grandes)
+           ============================================ */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .payment-card {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .payment-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 4px;
+        }
+
+        .payment-label {
+            font-size: 13px;
+            color: var(--color-gray-500);
+        }
+
+        /* ============================================
+           ANIMACIONES ADICIONALES
+           ============================================ */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .slide-in {
+            animation: slideIn var(--transition-normal);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ============================================
+           CONFETTI (Celebración)
+           ============================================ */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: var(--z-toast);
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+                background: var(--color-white);
+            }
+
+            .asistente-container {
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .asistente-content {
+                flex: 1;
+                padding: 24px 20px;
+            }
+
+            .step-title {
+                font-size: 22px;
+            }
+
+            .option-card {
+                padding: 16px;
+            }
+
+            .option-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .result-illustration {
+                width: 100px;
+                height: 100px;
+                font-size: 48px;
+            }
+        }
+
+        /* ============================================
+           UTILIDADES
+           ============================================ */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         CONTENEDOR PRINCIPAL DEL ASISTENTE
+         ============================================ -->
+    <div class="asistente-container">
+
+        <!-- HEADER: Logo y barra de progreso -->
+        <header class="asistente-header">
+            <div class="asistente-brand">
+                <div class="brand-icon">🚕</div>
+                <div class="brand-text">
+                    Asistente de Crédito
+                    <strong>Clave 2000</strong>
+                </div>
+            </div>
+
+            <!-- Barra de progreso -->
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-step" id="progress-step">Paso 1 de 4</span>
+                    <span class="progress-percentage" id="progress-percentage">25%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 25%"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENIDO: Pasos del formulario -->
+        <main class="asistente-content">
+
+            <!-- ============================================
+                 PASO 1: Objetivo principal
+                 ============================================ -->
+            <div class="step active" id="step-1" data-step="1">
+                <h2 class="step-title">¿Qué deseas hacer?</h2>
+                <p class="step-subtitle">Selecciona la opción que mejor describe tu situación</p>
+
+                <div class="options-grid">
+                    <button class="option-card" data-value="primer-taxi" onclick="selectOption(1, 'objetivo', 'primer-taxi', this)">
+                        <div class="option-icon">🚗</div>
+                        <div class="option-content">
+                            <div class="option-title">Conseguir mi primer taxi</div>
+                            <div class="option-description">Quiero comprar mi primer vehículo para trabajar</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+
+                    <button class="option-card" data-value="renovar" onclick="selectOption(1, 'objetivo', 'renovar', this)">
+                        <div class="option-icon">🔄</div>
+                        <div class="option-content">
+                            <div class="option-title">Cambiar o renovar mi taxi</div>
+                            <div class="option-description">Ya tengo un taxi y quiero actualizarlo</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+
+                    <button class="option-card" data-value="informacion" onclick="selectOption(1, 'objetivo', 'informacion', this)">
+                        <div class="option-icon">ℹ️</div>
+                        <div class="option-content">
+                            <div class="option-title">Solo quiero información</div>
+                            <div class="option-description">Aún estoy evaluando mis opciones</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PASO 2A: Situación laboral (si eligió primer taxi)
+                 ============================================ -->
+            <div class="step" id="step-2a" data-step="2">
+                <h2 class="step-title">¿Actualmente trabajas como conductor?</h2>
+                <p class="step-subtitle">Esto nos ayuda a entender tu experiencia</p>
+
+                <div class="binary-options">
+                    <button class="option-card binary-btn" data-value="si" onclick="selectOption(2, 'trabaja_conductor', true, this)">
+                        <span>Sí, soy conductor</span>
+                    </button>
+                    <button class="option-card binary-btn" data-value="no" onclick="selectOption(2, 'trabaja_conductor', false, this)">
+                        <span>No, soy nuevo</span>
+                    </button>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">← Atrás</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PASO 2B: Estado del taxi actual (si eligió renovar)
+                 ============================================ -->
+            <div class="step" id="step-2b" data-step="2">
+                <h2 class="step-title">¿Tu taxi actual está activo?</h2>
+                <p class="step-subtitle">Nos ayuda a determinar la mejor opción de financiación</p>
+
+                <div class="binary-options">
+                    <button class="option-card binary-btn" data-value="si" onclick="selectOption(2, 'taxi_activo', true, this)">
+                        <span>Sí, está activo</span>
+                    </button>
+                    <button class="option-card binary-btn" data-value="no" onclick="selectOption(2, 'taxi_activo', false, this)">
+                        <span>No, está inactivo</span>
+                    </button>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">← Atrás</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PASO 2C: Solo información (flujo alterno)
+                 ============================================ -->
+            <div class="step" id="step-2c" data-step="2">
+                <h2 class="step-title">¿Qué información necesitas?</h2>
+                <p class="step-subtitle">Selecciona lo que más te interesa conocer</p>
+
+                <div class="options-grid">
+                    <button class="option-card" data-value="requisitos" onclick="selectOption(2, 'info_tipo', 'requisitos', this)">
+                        <div class="option-icon">📋</div>
+                        <div class="option-content">
+                            <div class="option-title">Requisitos para el crédito</div>
+                            <div class="option-description">Quiero saber qué necesito para aplicar</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+
+                    <button class="option-card" data-value="tasas" onclick="selectOption(2, 'info_tipo', 'tasas', this)">
+                        <div class="option-icon">💰</div>
+                        <div class="option-content">
+                            <div class="option-title">Tasas y cuotas</div>
+                            <div class="option-description">Información sobre intereses y pagos</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+
+                    <button class="option-card" data-value="general" onclick="selectOption(2, 'info_tipo', 'general', this)">
+                        <div class="option-icon">💬</div>
+                        <div class="option-content">
+                            <div class="option-title">Asesoría personalizada</div>
+                            <div class="option-description">Quiero hablar con un experto</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(1)">← Atrás</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PASO 3: Capacidad de pago
+                 ============================================ -->
+            <div class="step" id="step-3" data-step="3">
+                <h2 class="step-title">¿Cuánto puedes pagar mensualmente?</h2>
+                <p class="step-subtitle">Selecciona el rango que mejor se ajuste a tu presupuesto</p>
+
+                <div class="payment-options">
+                    <button class="option-card payment-card" data-value="menos-800" onclick="selectOption(3, 'pago_mensual', 'menos-800', this)">
+                        <div class="payment-amount">&lt; $800.000</div>
+                        <div class="payment-label">Menos de $800.000 mensuales</div>
+                    </button>
+
+                    <button class="option-card payment-card" data-value="800-1200" onclick="selectOption(3, 'pago_mensual', '800-1200', this)">
+                        <div class="payment-amount">$800.000 – $1.200.000</div>
+                        <div class="payment-label">Entre $800.000 y $1.200.000 mensuales</div>
+                    </button>
+
+                    <button class="option-card payment-card" data-value="mas-1200" onclick="selectOption(3, 'pago_mensual', 'mas-1200', this)">
+                        <div class="payment-amount">&gt; $1.200.000</div>
+                        <div class="payment-label">Más de $1.200.000 mensuales</div>
+                    </button>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goBackToStep2()">← Atrás</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PASO 4: Urgencia
+                 ============================================ -->
+            <div class="step" id="step-4" data-step="4">
+                <h2 class="step-title">¿Qué tan pronto necesitas el crédito?</h2>
+                <p class="step-subtitle">Tu respuesta nos ayuda a priorizar tu solicitud</p>
+
+                <div class="options-grid">
+                    <button class="option-card" data-value="ya" onclick="selectOption(4, 'urgencia', 'ya', this)">
+                        <div class="option-icon">⚡</div>
+                        <div class="option-content">
+                            <div class="option-title">Lo necesito ya</div>
+                            <div class="option-description">Tengo prisa, quiero empezar cuanto antes</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+
+                    <button class="option-card" data-value="mes" onclick="selectOption(4, 'urgencia', 'mes', this)">
+                        <div class="option-icon">📅</div>
+                        <div class="option-content">
+                            <div class="option-title">Este mes</div>
+                            <div class="option-description">Planeo hacerlo en las próximas semanas</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+
+                    <button class="option-card" data-value="averiguando" onclick="selectOption(4, 'urgencia', 'averiguando', this)">
+                        <div class="option-icon">🔍</div>
+                        <div class="option-content">
+                            <div class="option-title">Solo estoy averiguando</div>
+                            <div class="option-description">Aún estoy en proceso de decisión</div>
+                        </div>
+                        <div class="option-check">✓</div>
+                    </button>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="goToStep(3)">← Atrás</button>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PANTALLA DE RESULTADO: Nivel ALTO
+                 ============================================ -->
+            <div class="step" id="result-alto" data-step="result">
+                <div class="result-container">
+                    <div class="result-illustration alto">🎉</div>
+                    <span class="result-badge alto">Perfil Ideal</span>
+                    <h2 class="result-title">¡Tienes un perfil ideal para financiar tu taxi!</h2>
+                    <p class="result-description">
+                        Según tus respuestas, calificas para nuestras mejores opciones de financiamiento.
+                        Un asesor te contactará en menos de 30 minutos.
+                    </p>
+
+                    <div class="benefits-list">
+                        <div class="benefits-title">Lo que obtienes:</div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Tasas preferenciales por tu excelente perfil</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Respuesta en menos de 24 horas</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Asesor personalizado durante todo el proceso</span>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de contacto -->
+                    <form class="contact-form" id="form-alto" onsubmit="submitForm(event, 'alto')">
+                        <div class="form-title">Déjanos tus datos para contactarte</div>
+                        <div class="form-group">
+                            <label class="form-label" for="nombre-alto">Nombre completo *</label>
+                            <input type="text" id="nombre-alto" class="form-input" placeholder="Ej: Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telefono-alto">Teléfono de contacto *</label>
+                            <input type="tel" id="telefono-alto" class="form-input" placeholder="Ej: 312 456 7890" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-alto">Correo electrónico</label>
+                            <input type="email" id="email-alto" class="form-input" placeholder="Ej: juan@email.com">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            Solicitar crédito ahora →
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PANTALLA DE RESULTADO: Nivel MEDIO
+                 ============================================ -->
+            <div class="step" id="result-medio" data-step="result">
+                <div class="result-container">
+                    <div class="result-illustration medio">👍</div>
+                    <span class="result-badge medio">Buen Perfil</span>
+                    <h2 class="result-title">Podrías aplicar a un crédito</h2>
+                    <p class="result-description">
+                        Tu perfil es bueno y tenemos opciones para ti. Un asesor evaluará tu caso
+                        y te presentará las alternativas disponibles.
+                    </p>
+
+                    <div class="benefits-list">
+                        <div class="benefits-title">Próximos pasos:</div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Evaluación personalizada de tu caso</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Te presentaremos múltiples opciones</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Sin compromiso ni costo de análisis</span>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de contacto -->
+                    <form class="contact-form" id="form-medio" onsubmit="submitForm(event, 'medio')">
+                        <div class="form-title">Déjanos tus datos para contactarte</div>
+                        <div class="form-group">
+                            <label class="form-label" for="nombre-medio">Nombre completo *</label>
+                            <input type="text" id="nombre-medio" class="form-input" placeholder="Ej: Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telefono-medio">Teléfono de contacto *</label>
+                            <input type="tel" id="telefono-medio" class="form-input" placeholder="Ej: 312 456 7890" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-medio">Correo electrónico</label>
+                            <input type="email" id="email-medio" class="form-input" placeholder="Ej: juan@email.com">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            Hablar con un asesor →
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ============================================
+                 PANTALLA DE RESULTADO: Nivel BAJO
+                 ============================================ -->
+            <div class="step" id="result-bajo" data-step="result">
+                <div class="result-container">
+                    <div class="result-illustration bajo">💡</div>
+                    <span class="result-badge bajo">Asesoría Gratuita</span>
+                    <h2 class="result-title">Te ayudamos a prepararte para tu crédito</h2>
+                    <p class="result-description">
+                        Aún no tienes el perfil ideal, pero no te preocupes. Te asesoramos
+                        gratuitamente para que puedas cumplir tus metas pronto.
+                    </p>
+
+                    <div class="benefits-list">
+                        <div class="benefits-title">Te ayudamos con:</div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Un plan personalizado de preparación</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Consejos para mejorar tu perfil crediticio</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">✓</span>
+                            <span>Seguimiento hasta que estés listo</span>
+                        </div>
+                    </div>
+
+                    <!-- Formulario de contacto -->
+                    <form class="contact-form" id="form-bajo" onsubmit="submitForm(event, 'bajo')">
+                        <div class="form-title">Déjanos tus datos para asesorarte</div>
+                        <div class="form-group">
+                            <label class="form-label" for="nombre-bajo">Nombre completo *</label>
+                            <input type="text" id="nombre-bajo" class="form-input" placeholder="Ej: Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telefono-bajo">Teléfono de contacto *</label>
+                            <input type="tel" id="telefono-bajo" class="form-input" placeholder="Ej: 312 456 7890" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email-bajo">Correo electrónico</label>
+                            <input type="email" id="email-bajo" class="form-input" placeholder="Ej: juan@email.com">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            Recibir asesoría →
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ============================================
+         CONTENEDOR DE CONFETTI (celebración)
+         ============================================ -->
+    <div class="confetti-container" id="confetti-container"></div>
+
+    <!-- ============================================
+         JAVASCRIPT - Lógica del asistente
+         ============================================ -->
+    <script>
+        /**
+         * ============================================
+         * ESTADO GLOBAL DE LA APLICACIÓN
+         * ============================================
+         */
+        const state = {
+            currentStep: 1,
+            totalSteps: 4,
+            responses: {
+                objetivo: null,           // 'primer-taxi' | 'renovar' | 'informacion'
+                subcategoria: null,       // true/false o string según el paso 2
+                pago_mensual: null,       // 'menos-800' | '800-1200' | 'mas-1200'
+                urgencia: null            // 'ya' | 'mes' | 'averiguando'
+            },
+            classification: {
+                tipo: null,               // 'conductor' | 'propietario'
+                nivel: null               // 'alto' | 'medio' | 'bajo'
+            }
+        };
+
+        /**
+         * ============================================
+         * CONFIGURACIÓN PARA INTEGRACIONES
+         * ============================================
+         *
+         * Preparado para:
+         * - Google Tag Manager (dataLayer)
+         * - APIs externas (OpenAI, etc.)
+         * - Webhooks de CRM
+         */
+        const config = {
+            gtm: {
+                enabled: true,  // Cambiar a false si no se usa GTM
+                events: {
+                    quizStarted: 'quiz_iniciado',
+                    stepCompleted: 'quiz_paso_completado',
+                    quizCompleted: 'quiz_completado',
+                    leadGenerated: 'lead_generado'
+                }
+            },
+            api: {
+                enabled: false,  // Cambiar a true para habilitar envío a API
+                endpoint: 'https://api.ejemplo.com/leads',  // Reemplazar con endpoint real
+                headers: {
+                    'Content-Type': 'application/json',
+                    // 'Authorization': 'Bearer YOUR_API_KEY'
+                }
+            }
+        };
+
+        /**
+         * ============================================
+         * INICIALIZACIÓN
+         * ============================================
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Evento de inicio del quiz para GTM
+            pushDataLayer(config.gtm.events.quizStarted, {
+                paso: 1,
+                total_pasos: state.totalSteps
+            });
+
+            console.log('🚕 Asistente de Crédito inicializado');
+            console.log('Estado inicial:', state);
+        });
+
+        /**
+         * ============================================
+         * GESTIÓN DE OPCIONES
+         * ============================================
+         *
+         * @param {number} step - Número del paso actual
+         * @param {string} field - Campo a guardar en el estado
+         * @param {any} value - Valor seleccionado
+         * @param {HTMLElement} element - Elemento DOM seleccionado
+         */
+        function selectOption(step, field, value, element) {
+            // Guardar respuesta en el estado
+            state.responses[field] = value;
+
+            // Actualizar UI - marcar seleccionado
+            const parent = element.parentElement;
+            const siblings = parent.querySelectorAll('.option-card');
+            siblings.forEach(sibling => sibling.classList.remove('selected'));
+            element.classList.add('selected');
+
+            // Pequeña pausa para UX antes de avanzar
+            setTimeout(() => {
+                handleStepTransition(step, value);
+            }, 250);
+        }
+
+        /**
+         * ============================================
+         * TRANSICIONES ENTRE PASOS
+         * ============================================
+         *
+         * Maneja la lógica de navegación entre pasos
+         * según las respuestas del usuario.
+         */
+        function handleStepTransition(currentStep, value) {
+            // Evento GTM - paso completado
+            pushDataLayer(config.gtm.events.stepCompleted, {
+                paso: currentStep,
+                campo: Object.keys(state.responses)[currentStep - 1],
+                valor: value
+            });
+
+            switch (currentStep) {
+                case 1:
+                    // Según el objetivo, ir a diferentes pasos 2
+                    if (value === 'primer-taxi') {
+                        goToStep('2a');
+                    } else if (value === 'renovar') {
+                        goToStep('2b');
+                    } else {
+                        // Solo información - paso especial
+                        goToStep('2c');
+                    }
+                    break;
+
+                case 2:
+                    // Desde cualquier paso 2, ir al paso 3
+                    goToStep(3);
+                    break;
+
+                case 3:
+                    goToStep(4);
+                    break;
+
+                case 4:
+                    // Calificar y mostrar resultado
+                    classifyAndShowResult();
+                    break;
+            }
+        }
+
+        /**
+         * ============================================
+         * NAVEGACIÓN ENTRE PASOS
+         * ============================================
+         *
+         * @param {number|string} step - Paso al que ir
+         */
+        function goToStep(step) {
+            // Ocultar paso actual
+            const currentStepEl = document.querySelector('.step.active');
+            if (currentStepEl) {
+                currentStepEl.classList.remove('active');
+            }
+
+            // Mostrar nuevo paso
+            let targetId;
+            if (typeof step === 'number') {
+                // Si el usuario vino de paso 2, determinar cuál
+                if (step === 2) {
+                    const objetivo = state.responses.objetivo;
+                    if (objetivo === 'primer-taxi') targetId = 'step-2a';
+                    else if (objetivo === 'renovar') targetId = 'step-2b';
+                    else targetId = 'step-2c';
+                } else {
+                    targetId = `step-${step}`;
+                }
+                state.currentStep = step;
+            } else {
+                targetId = `step-${step}`;
+                state.currentStep = parseInt(step.charAt(0));
+            }
+
+            const targetStep = document.getElementById(targetId);
+            if (targetStep) {
+                targetStep.classList.add('active');
+            }
+
+            // Actualizar barra de progreso
+            updateProgress();
+        }
+
+        /**
+         * ============================================
+         * REGRESAR AL PASO 2 CORRECTO
+         * ============================================
+         */
+        function goBackToStep2() {
+            const objetivo = state.responses.objetivo;
+            let targetId;
+
+            if (objetivo === 'primer-taxi') targetId = 'step-2a';
+            else if (objetivo === 'renovar') targetId = 'step-2b';
+            else targetId = 'step-2c';
+
+            // Ocultar paso actual
+            document.querySelector('.step.active').classList.remove('active');
+
+            // Mostrar paso 2 correspondiente
+            document.getElementById(targetId).classList.add('active');
+
+            state.currentStep = 2;
+            updateProgress();
+        }
+
+        /**
+         * ============================================
+         * ACTUALIZAR BARRA DE PROGRESO
+         * ============================================
+         */
+        function updateProgress() {
+            const percentage = (state.currentStep / state.totalSteps) * 100;
+
+            document.getElementById('progress-step').textContent =
+                `Paso ${state.currentStep} de ${state.totalSteps}`;
+            document.getElementById('progress-percentage').textContent =
+                `${Math.round(percentage)}%`;
+            document.getElementById('progress-fill').style.width =
+                `${percentage}%`;
+        }
+
+        /**
+         * ============================================
+         * CLASIFICACIÓN DEL LEAD
+         * ============================================
+         *
+         * Lógica de negocio para clasificar leads:
+         *
+         * ALTO: pago > 1.000.000 Y urgencia = 'ya'
+         * MEDIO: pago entre 800k-1.2M O urgencia = 'mes'
+         * BAJO: pago bajo Y urgencia baja
+         */
+        function classifyLead() {
+            const { objetivo, pago_mensual, urgencia } = state.responses;
+
+            // Determinar tipo
+            const tipo = (objetivo === 'primer-taxi' || objetivo === 'informacion')
+                ? 'conductor'
+                : 'propietario';
+
+            // Mapear pago a valor numérico para comparación
+            const pagoMap = {
+                'menos-800': 600,
+                '800-1200': 1000,
+                'mas-1200': 1400
+            };
+
+            const pagoValor = pagoMap[pago_mensual] || 0;
+
+            // Lógica de clasificación
+            let nivel;
+
+            if (pagoValor > 1000 && urgencia === 'ya') {
+                nivel = 'alto';
+            } else if ((pagoValor >= 800 && pagoValor <= 1200) || urgencia === 'mes') {
+                nivel = 'medio';
+            } else {
+                nivel = 'bajo';
+            }
+
+            // Guardar clasificación
+            state.classification = { tipo, nivel };
+
+            return { tipo, nivel };
+        }
+
+        /**
+         * ============================================
+         * MOSTRAR RESULTADO
+         * ============================================
+         */
+        function classifyAndShowResult() {
+            const { nivel } = classifyLead();
+
+            // Ocultar paso actual
+            document.querySelector('.step.active').classList.remove('active');
+
+            // Mostrar resultado correspondiente
+            const resultId = `result-${nivel}`;
+            document.getElementById(resultId).classList.add('active');
+
+            // Actualizar progreso a 100%
+            document.getElementById('progress-step').textContent = '¡Completado!';
+            document.getElementById('progress-percentage').textContent = '100%';
+            document.getElementById('progress-fill').style.width = '100%';
+
+            // Evento GTM - quiz completado
+            pushDataLayer(config.gtm.events.quizCompleted, {
+                nivel: nivel,
+                tipo: state.classification.tipo,
+                respuestas: state.responses
+            });
+
+            // Si es perfil alto, mostrar confetti
+            if (nivel === 'alto') {
+                launchConfetti();
+            }
+
+            console.log('✅ Quiz completado');
+            console.log('Clasificación:', state.classification);
+            console.log('Respuestas:', state.responses);
+        }
+
+        /**
+         * ============================================
+         * ENVÍO DEL FORMULARIO
+         * ============================================
+         *
+         * @param {Event} event - Evento del formulario
+         * @param {string} nivel - Nivel del lead
+         */
+        async function submitForm(event, nivel) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Recopilar datos del lead
+            const leadData = {
+                nivel: nivel,
+                tipo: state.classification.tipo,
+                respuestas: state.responses,
+                contacto: {
+                    nombre: form.querySelector('input[type="text"]').value,
+                    telefono: form.querySelector('input[type="tel"]').value,
+                    email: form.querySelector('input[type="email"]').value || null
+                },
+                timestamp: new Date().toISOString(),
+                fuente: window.location.hostname,
+                userAgent: navigator.userAgent
+            };
+
+            // Evento GTM - lead generado
+            pushDataLayer(config.gtm.events.leadGenerated, {
+                nivel: nivel,
+                tipo: state.classification.tipo
+            });
+
+            // Deshabilitar botón durante envío
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            try {
+                // Si hay API configurada, enviar datos
+                if (config.api.enabled) {
+                    await sendToAPI(leadData);
+                }
+
+                // Mostrar mensaje de éxito
+                showSuccessMessage(submitBtn, nivel);
+
+                console.log('✅ Lead generado:', leadData);
+
+            } catch (error) {
+                console.error('Error al enviar:', error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                alert('Hubo un error al enviar. Por favor intenta nuevamente.');
+            }
+        }
+
+        /**
+         * ============================================
+         * ENVIAR DATOS A API
+         * ============================================
+         *
+         * @param {Object} data - Datos del lead
+         */
+        async function sendToAPI(data) {
+            const response = await fetch(config.api.endpoint, {
+                method: 'POST',
+                headers: config.api.headers,
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return response.json();
+        }
+
+        /**
+         * ============================================
+         * GOOGLE TAG MANAGER - DataLayer
+         * ============================================
+         *
+         * @param {string} event - Nombre del evento
+         * @param {Object} data - Datos adicionales
+         */
+        function pushDataLayer(event, data = {}) {
+            if (!config.gtm.enabled) return;
+
+            // Verificar si dataLayer existe (GTM instalado)
+            if (typeof window.dataLayer !== 'undefined') {
+                window.dataLayer.push({
+                    event: event,
+                    ...data
+                });
+                console.log('📊 GTM Event:', event, data);
+            } else {
+                // Modo debug: solo log si no hay GTM
+                console.log('📊 GTM Event (debug):', event, data);
+            }
+        }
+
+        /**
+         * ============================================
+         * ANIMACIÓN DE CONFETTI
+         * ============================================
+         */
+        function launchConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(confetti);
+
+                // Eliminar después de la animación
+                setTimeout(() => {
+                    confetti.remove();
+                }, 4000);
+            }
+        }
+
+        /**
+         * ============================================
+         * MENSAJE DE ÉXITO
+         * ============================================
+         */
+        function showSuccessMessage(button, nivel) {
+            const messages = {
+                alto: '✓ Solicitud enviada. Te contactaremos en 30 min.',
+                medio: '✓ Solicitud enviada. Un asesor te llamará pronto.',
+                bajo: '✓ Solicitud enviada. Te ayudaremos a prepararte.'
+            };
+
+            button.textContent = messages[nivel];
+            button.style.background = '#10B981';
+
+            setTimeout(() => {
+                button.disabled = true;
+            }, 2000);
+        }
+
+        /**
+         * ============================================
+         * API PÚBLICA - Para integraciones externas
+         * ============================================
+         *
+         * Expone funciones útiles para uso externo
+         */
+        window.AsistenteCredito = {
+            getState: () => state,
+            getClassification: () => state.classification,
+            getResponses: () => state.responses,
+            reset: () => {
+                state.currentStep = 1;
+                state.responses = {
+                    objetivo: null,
+                    subcategoria: null,
+                    pago_mensual: null,
+                    urgencia: null
+                };
+                state.classification = {
+                    tipo: null,
+                    nivel: null
+                };
+                goToStep(1);
+            }
+        };
+    </script>
+</body>
+</html>
