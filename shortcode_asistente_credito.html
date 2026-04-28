@@ -1,0 +1,291 @@
+<div class="card">
+
+  <!-- ── Header: logo + barra de progreso ── -->
+  <div class="card-header">
+    <div class="brand-row">
+      <div class="brand-label">Asistente de Crédito</div>
+    </div>
+    <div class="progress-meta">
+      <span class="progress-step-label" id="prog-label">Paso 1 de 4</span>
+      <span class="progress-pct" id="prog-pct">25%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <div class="card-body">
+
+    <!-- ── Paso 1: Objetivo ── -->
+    <div class="step active" id="step-1">
+      <div class="step-title">¿Qué deseas hacer?</div>
+      <div class="step-sub">Selecciona la opción que mejor describe tu situación</div>
+      <div class="options">
+        <button class="opt" data-step="1" data-field="objetivo" data-value="primer-taxi">
+          <div class="opt-icon"><span class="material-icons">local_taxi</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Conseguir mi primer taxi</div>
+            <div class="opt-desc">Quiero comprar mi primer vehículo para trabajar</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+        <button class="opt" data-step="1" data-field="objetivo" data-value="renovar">
+          <div class="opt-icon"><span class="material-icons">autorenew</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Cambiar o renovar mi taxi</div>
+            <div class="opt-desc">Ya tengo un taxi y quiero actualizarlo</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+        <button class="opt" data-step="1" data-field="objetivo" data-value="informacion">
+          <div class="opt-icon"><span class="material-icons">info</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Solo quiero información</div>
+            <div class="opt-desc">Aún estoy evaluando mis opciones</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 2A: Actividad ── -->
+    <div class="step" id="step-2a">
+      <div class="step-title">¿Cuál es tu actividad??</div>
+      <div class="step-sub">Esto nos ayuda a entender tu experiencia</div>
+      <div class="options options-binary">
+        <button class="opt opt-binary" data-step="2" data-field="trabaja_conductor" data-value="true">
+          <div class="opt-title">Conductor de taxi o plataformas</div>
+        </button>
+        <button class="opt opt-binary" data-step="2" data-field="trabaja_conductor" data-value="false">
+          <div class="opt-title">Propietario</div>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" data-action="go-1">
+          <span class="material-icons">arrow_back</span> Atrás
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 2B: ¿Taxi activo? ── -->
+    <div class="step" id="step-2b">
+      <div class="step-title">¿Tu taxi actual está activo?</div>
+      <div class="step-sub">Nos ayuda a determinar la mejor opción de financiación</div>
+      <div class="options options-binary">
+        <button class="opt opt-binary" data-step="2" data-field="taxi_activo" data-value="true">
+          <div class="opt-title">Sí, está activo</div>
+        </button>
+        <button class="opt opt-binary" data-step="2" data-field="taxi_activo" data-value="false">
+          <div class="opt-title">No, está inactivo</div>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" data-action="go-1">
+          <span class="material-icons">arrow_back</span> Atrás
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 2C: Solo información ── -->
+    <div class="step" id="step-2c">
+      <div class="step-title">¿Qué información necesitas?</div>
+      <div class="step-sub">Selecciona lo que más te interesa conocer</div>
+      <div class="options">
+        <button class="opt" data-step="2" data-field="info_tipo" data-value="requisitos">
+          <div class="opt-icon"><span class="material-icons">assignment</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Requisitos para el crédito</div>
+            <div class="opt-desc">Quiero saber qué necesito para aplicar</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+        <button class="opt" data-step="2" data-field="info_tipo" data-value="tasas">
+          <div class="opt-icon"><span class="material-icons">attach_money</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Tasas y cuotas</div>
+            <div class="opt-desc">Información sobre intereses y pagos</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+        <button class="opt" data-step="2" data-field="info_tipo" data-value="general">
+          <div class="opt-icon"><span class="material-icons">support_agent</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Asesoría personalizada</div>
+            <div class="opt-desc">Quiero hablar con un experto</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" data-action="go-1">
+          <span class="material-icons">arrow_back</span> Atrás
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 3: Cuota inicial ── -->
+    <div class="step" id="step-3">
+      <div class="step-title">¿Cuánto tienes de cuota inicial?</div>
+      <div class="step-sub">Selecciona el rango que mejor se ajuste a tu presupuesto</div>
+      <div class="options">
+        <button class="opt opt-payment" data-step="3" data-field="pago_mensual" data-value="menos-800">
+          <div class="pay-amount">Entre 8 a 10 millones de pesos</div>
+        </button>
+        <button class="opt opt-payment" data-step="3" data-field="pago_mensual" data-value="800-1200">
+          <div class="pay-amount">Entre 10 a 15 millones de pesos</div>
+        </button>
+        <button class="opt opt-payment" data-step="3" data-field="pago_mensual" data-value="mas-1200">
+          <div class="pay-amount">Más de 15 millones de pesos</div>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" data-action="goBack2">
+          <span class="material-icons">arrow_back</span> Atrás
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Paso 4: Urgencia ── -->
+    <div class="step" id="step-4">
+      <div class="step-title">¿Qué tan pronto necesitas el crédito?</div>
+      <div class="step-sub">Tu respuesta nos ayuda a priorizar tu solicitud</div>
+      <div class="options">
+        <button class="opt" data-step="4" data-field="urgencia" data-value="ya">
+          <div class="opt-icon"><span class="material-icons">bolt</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Lo necesito ya</div>
+            <div class="opt-desc">Tengo prisa, quiero empezar cuanto antes</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+        <button class="opt" data-step="4" data-field="urgencia" data-value="mes">
+          <div class="opt-icon"><span class="material-icons">calendar_today</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Este mes</div>
+            <div class="opt-desc">Planeo hacerlo en las próximas semanas</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+        <button class="opt" data-step="4" data-field="urgencia" data-value="averiguando">
+          <div class="opt-icon"><span class="material-icons">search</span></div>
+          <div class="opt-body">
+            <div class="opt-title">Solo estoy averiguando</div>
+            <div class="opt-desc">Aún estoy en proceso de decisión</div>
+          </div>
+          <div class="opt-check"><span class="material-icons">check</span></div>
+        </button>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-outline" data-action="go-3">
+          <span class="material-icons">arrow_back</span> Atrás
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Resultado: ALTO ── -->
+    <div class="step" id="result-alto">
+      <div class="result-wrap">
+        <div class="result-icon-circle alto"><span class="material-icons">verified</span></div>
+        <div class="result-badge alto"><span class="material-icons">star</span>Perfil Ideal</div>
+        <div class="result-title">¡Tienes un perfil ideal para financiar tu taxi!</div>
+        <div class="result-desc">Calificas para nuestras mejores opciones. Un asesor te contactará en menos de 30 minutos.</div>
+        <div class="benefits-box">
+          <div class="benefits-box-title">Lo que obtienes</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Tasas preferenciales por tu excelente perfil</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Respuesta en menos de 24 horas</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Asesor personalizado durante todo el proceso</div>
+        </div>
+        <form class="contact-form" data-nivel="alto">
+          <div class="form-title">Déjanos tus datos para contactarte</div>
+          <div class="form-group">
+            <label class="form-label">Nombre completo *</label>
+            <div class="form-input-wrap"><span class="material-icons">person</span><input type="text" placeholder="Ej: Juan Pérez" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono de contacto *</label>
+            <div class="form-input-wrap"><span class="material-icons">phone</span><input type="tel" placeholder="Ej: 312 456 7890" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <div class="form-input-wrap"><span class="material-icons">mail</span><input type="email" placeholder="Ej: juan@correo.com"></div>
+          </div>
+          <button type="submit" class="btn btn-red btn-full">
+            Solicitar crédito ahora <span class="material-icons">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── Resultado: MEDIO ── -->
+    <div class="step" id="result-medio">
+      <div class="result-wrap">
+        <div class="result-icon-circle medio"><span class="material-icons">thumb_up</span></div>
+        <div class="result-badge medio"><span class="material-icons">trending_up</span>Buen Perfil</div>
+        <div class="result-title">Podrías aplicar a un crédito con Clave 2000</div>
+        <div class="result-desc">Tu perfil es bueno y tenemos opciones para ti. Un asesor evaluará tu caso.</div>
+        <div class="benefits-box">
+          <div class="benefits-box-title">Próximos pasos</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Evaluación personalizada de tu caso</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Te presentaremos múltiples opciones</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Sin compromiso ni costo de análisis</div>
+        </div>
+        <form class="contact-form" data-nivel="medio">
+          <div class="form-title">Déjanos tus datos para contactarte</div>
+          <div class="form-group">
+            <label class="form-label">Nombre completo *</label>
+            <div class="form-input-wrap"><span class="material-icons">person</span><input type="text" placeholder="Ej: Juan Pérez" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono de contacto *</label>
+            <div class="form-input-wrap"><span class="material-icons">phone</span><input type="tel" placeholder="Ej: 312 456 7890" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <div class="form-input-wrap"><span class="material-icons">mail</span><input type="email" placeholder="Ej: juan@correo.com"></div>
+          </div>
+          <button type="submit" class="btn btn-navy btn-full">
+            Hablar con un asesor <span class="material-icons">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── Resultado: BAJO ── -->
+    <div class="step" id="result-bajo">
+      <div class="result-wrap">
+        <div class="result-icon-circle bajo"><span class="material-icons">lightbulb</span></div>
+        <div class="result-badge bajo"><span class="material-icons">support_agent</span>Asesoría Gratuita</div>
+        <div class="result-title">Te ayudamos a prepararte para tu crédito</div>
+        <div class="result-desc">Te asesoramos gratuitamente para que puedas cumplir tus metas pronto.</div>
+        <div class="benefits-box">
+          <div class="benefits-box-title">Te ayudamos con</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Un plan personalizado de preparación</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Consejos para mejorar tu perfil crediticio</div>
+          <div class="benefit-row"><span class="material-icons">check_circle</span>Seguimiento hasta que estés listo</div>
+        </div>
+        <form class="contact-form" data-nivel="bajo">
+          <div class="form-title">Déjanos tus datos para asesorarte</div>
+          <div class="form-group">
+            <label class="form-label">Nombre completo *</label>
+            <div class="form-input-wrap"><span class="material-icons">person</span><input type="text" placeholder="Ej: Juan Pérez" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Teléfono de contacto *</label>
+            <div class="form-input-wrap"><span class="material-icons">phone</span><input type="tel" placeholder="Ej: 312 456 7890" required></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico</label>
+            <div class="form-input-wrap"><span class="material-icons">mail</span><input type="email" placeholder="Ej: juan@correo.com"></div>
+          </div>
+          <button type="submit" class="btn btn-navy btn-full">
+            Recibir asesoría gratuita <span class="material-icons">arrow_forward</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Capa de confetti (fuera de la card) -->
+<div class="confetti-layer" id="confetti-layer"></div>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asistente de Crédito | Clave 2000</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Montserrat'; src:url('fonts/Montserrat-VariableFont_wght.ttf') format('truetype'); font-weight:100 900; font-style:normal; }
+    @font-face { font-family:'Montserrat'; src:url('fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype'); font-weight:100 900; font-style:italic; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;}
+    body{font-family:'Montserrat',sans-serif;background:#243C4F;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+    .card{width:100%;max-width:480px;background:#fff;border-radius:16px;box-shadow:0 20px 48px rgba(0,0,0,0.22);overflow:hidden;}
+    .card-header{background:#F6F6F6;padding:20px 24px;border-bottom:1px solid #E7E7E7;}
+    .brand-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .brand-logo{height:40px;display:block;}
+    .brand-label{font-size:12px;font-weight:500;color:#888;line-height:1.3;}
+    .brand-label strong{display:block;font-size:15px;font-weight:700;color:#243C4F;}
+    .progress-meta{display:flex;justify-content:space-between;margin-bottom:8px;}
+    .progress-step-label{font-size:12px;font-weight:600;color:#C63025;}
+    .progress-pct{font-size:12px;font-weight:500;color:#888;}
+    .progress-track{height:5px;background:#E7E7E7;border-radius:200px;overflow:hidden;}
+    .progress-fill{height:100%;background:#C63025;border-radius:200px;transition:width .5s ease;}
+    .card-body{padding:32px 24px;min-height:380px;}
+    .step{display:none;}
+    .step.active{display:block;animation:fadeUp .25s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    .step-title{font-size:22px;font-weight:700;color:#243C4F;line-height:1.25;margin-bottom:6px;}
+    .step-sub{font-size:14px;font-weight:400;color:#888;margin-bottom:24px;line-height:1.5;}
+    .options{display:flex;flex-direction:column;gap:10px;}
+    .opt{display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border:2px solid #E7E7E7;border-radius:12px;cursor:pointer;text-align:left;width:100%;font-family:'Montserrat',sans-serif;transition:border-color .15s,background .15s,transform .15s,box-shadow .15s;}
+    .opt:hover{border-color:#243C4F;background:#F6F6F6;transform:translateY(-1px);box-shadow:0 2px 8px rgba(12,12,13,0.08);}
+    .opt.selected{border-color:#C63025;background:#FEF3F2;}
+    .opt-icon{width:44px;height:44px;border-radius:200px;background:#F6F6F6;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
+    .opt-icon .material-icons{font-size:22px;color:#243C4F;transition:color .15s;}
+    .opt:hover .opt-icon{background:#243C4F;}
+    .opt:hover .opt-icon .material-icons{color:#fff;}
+    .opt.selected .opt-icon{background:#C63025;}
+    .opt.selected .opt-icon .material-icons{color:#fff;}
+    .opt-body{flex:1;}
+    .opt-title{font-size:15px;font-weight:600;color:#243C4F;margin-bottom:2px;}
+    .opt-desc{font-size:12px;font-weight:400;color:#888;line-height:1.4;}
+    .opt-check{width:22px;height:22px;border:2px solid #D1D1D1;border-radius:200px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+    .opt-check .material-icons{font-size:14px;color:transparent;}
+    .opt.selected .opt-check{background:#C63025;border-color:#C63025;}
+    .opt.selected .opt-check .material-icons{color:#fff;}
+    .options-binary{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .opt-binary{padding:18px 12px;text-align:center;justify-content:center;}
+    .opt-binary .opt-title{font-size:14px;margin-bottom:0;}
+    .opt-payment{padding:18px 20px;justify-content:center;text-align:center;flex-direction:column;gap:4px;}
+    .opt-payment .pay-amount{font-size:18px;font-weight:700;color:#243C4F;}
+    .opt-payment.selected .pay-amount{color:#C63025;}
+    .opt-payment .pay-label{font-size:12px;color:#888;font-weight:400;}
+    .btn-row{display:flex;gap:10px;margin-top:24px;}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;padding:0 20px;border-radius:8px;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:600;transition:background .15s,transform .1s;}
+    .btn:active{transform:scale(0.98);}
+    .btn-navy{background:#243C4F;color:#fff;flex:1;}
+    .btn-navy:hover{background:#2D5777;}
+    .btn-red{background:#C63025;color:#fff;flex:1;}
+    .btn-red:hover{background:#C52B27;}
+    .btn-outline{background:#fff;color:#243C4F;border:2px solid #E7E7E7;flex-shrink:0;}
+    .btn-outline:hover{border-color:#243C4F;background:#F6F6F6;}
+    .btn .material-icons{font-size:18px;}
+    .btn-full{width:100%;}
+    .result-wrap{text-align:center;padding:8px 0;}
+    .result-icon-circle{width:96px;height:96px;border-radius:200px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+    .result-icon-circle .material-icons{font-size:48px;}
+    .result-icon-circle.alto{background:#FEF3F2;}
+    .result-icon-circle.alto .material-icons{color:#C63025;}
+    .result-icon-circle.medio{background:#F6F6F6;}
+    .result-icon-circle.medio .material-icons{color:#243C4F;}
+    .result-icon-circle.bajo{background:#F4F7FB;}
+    .result-icon-circle.bajo .material-icons{color:#2D5777;}
+    .result-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:200px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;}
+    .result-badge .material-icons{font-size:14px;}
+    .result-badge.alto{background:#FEF3F2;color:#C63025;}
+    .result-badge.medio{background:#F6F6F6;color:#243C4F;}
+    .result-badge.bajo{background:#F4F7FB;color:#2D5777;}
+    .result-title{font-size:20px;font-weight:700;color:#243C4F;margin-bottom:10px;line-height:1.35;}
+    .result-desc{font-size:14px;color:#5D5D5D;line-height:1.6;margin-bottom:22px;}
+    .benefits-box{background:#F6F6F6;border-radius:12px;padding:18px 18px 10px;text-align:left;margin-bottom:24px;}
+    .benefits-box-title{font-size:12px;font-weight:700;color:#243C4F;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;}
+    .benefit-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#5D5D5D;margin-bottom:8px;line-height:1.4;}
+    .benefit-row .material-icons{font-size:16px;color:#C63025;flex-shrink:0;margin-top:1px;}
+    .contact-form{padding-top:20px;border-top:1px solid #E7E7E7;margin-top:4px;}
+    .form-title{font-size:15px;font-weight:600;color:#243C4F;margin-bottom:14px;text-align:left;}
+    .form-group{margin-bottom:14px;text-align:left;}
+    .form-label{display:block;font-size:12px;font-weight:600;color:#333;margin-bottom:5px;}
+    .form-input-wrap{display:flex;align-items:center;gap:10px;height:46px;border:1px solid #D1D1D1;border-radius:8px;padding:0 14px;background:#fff;transition:border-color .15s;}
+    .form-input-wrap:focus-within{border-color:#243C4F;}
+    .form-input-wrap .material-icons{font-size:18px;color:#243C4F;flex-shrink:0;}
+    .form-input-wrap input{border:none;outline:none;width:100%;font-family:'Montserrat',sans-serif;font-size:14px;color:#333;background:transparent;}
+    .form-input-wrap input::placeholder{color:#B5B5B5;}
+    .confetti-layer{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;}
+    .confetti-piece{position:absolute;width:9px;height:9px;border-radius:2px;animation:confettiFall 2.8s ease-out forwards;}
+    @keyframes confettiFall{0%{transform:translateY(-60px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(680deg);opacity:0;}}
+    @media(max-width:480px){body{padding:0;background:#fff;}.card{border-radius:0;box-shadow:none;min-height:100vh;}}
+    .hidden{display:none!important;}
+  </style>
+</head>
+<body>
+<div class="card">
+  <header class="card-header">
+    <div class="brand-row">
+      <img class="brand-logo" src="assets/logo.svg" alt="Clave 2000" onerror="this.style.display='none';document.getElementById('logo-fb').style.display='flex'">
+      <div id="logo-fb" style="display:none;align-items:center;font-size:18px;font-weight:700;color:#243C4F;font-family:'Montserrat',sans-serif">Clave<span style="color:#C63025">2000</span></div>
+      <div class="brand-label">Asistente de Crédito <strong>Clave 2000</strong></div>
+    </div>
+    <div class="progress-meta">
+      <span class="progress-step-label" id="prog-label">Paso 1 de 4</span>
+      <span class="progress-pct" id="prog-pct">25%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:25%"></div></div>
+  </header>
+  <main class="card-body">
+    <div class="step active" id="step-1">
+      <div class="step-title">¿Qué deseas hacer?</div>
+      <div class="step-sub">Selecciona la opción que mejor describe tu situación</div>
+      <div class="options">
+        <button class="opt" onclick="pick(1,'objetivo','primer-taxi',this)"><div class="opt-icon"><span class="material-icons">local_taxi</span></div><div class="opt-body"><div class="opt-title">Conseguir mi primer taxi</div><div class="opt-desc">Quiero comprar mi primer vehículo para trabajar</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+        <button class="opt" onclick="pick(1,'objetivo','renovar',this)"><div class="opt-icon"><span class="material-icons">autorenew</span></div><div class="opt-body"><div class="opt-title">Cambiar o renovar mi taxi</div><div class="opt-desc">Ya tengo un taxi y quiero actualizarlo</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+        <button class="opt" onclick="pick(1,'objetivo','informacion',this)"><div class="opt-icon"><span class="material-icons">info</span></div><div class="opt-body"><div class="opt-title">Solo quiero información</div><div class="opt-desc">Aún estoy evaluando mis opciones</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+      </div>
+    </div>
+    <div class="step" id="step-2a">
+      <div class="step-title">¿Actualmente trabajas como conductor?</div>
+      <div class="step-sub">Esto nos ayuda a entender tu experiencia</div>
+      <div class="options options-binary">
+        <button class="opt opt-binary" onclick="pick(2,'trabaja_conductor',true,this)"><div class="opt-title">Sí, soy conductor</div></button>
+        <button class="opt opt-binary" onclick="pick(2,'trabaja_conductor',false,this)"><div class="opt-title">No, soy nuevo</div></button>
+      </div>
+      <div class="btn-row"><button class="btn btn-outline" onclick="go(1)"><span class="material-icons">arrow_back</span> Atrás</button></div>
+    </div>
+    <div class="step" id="step-2b">
+      <div class="step-title">¿Tu taxi actual está activo?</div>
+      <div class="step-sub">Nos ayuda a determinar la mejor opción de financiación</div>
+      <div class="options options-binary">
+        <button class="opt opt-binary" onclick="pick(2,'taxi_activo',true,this)"><div class="opt-title">Sí, está activo</div></button>
+        <button class="opt opt-binary" onclick="pick(2,'taxi_activo',false,this)"><div class="opt-title">No, está inactivo</div></button>
+      </div>
+      <div class="btn-row"><button class="btn btn-outline" onclick="go(1)"><span class="material-icons">arrow_back</span> Atrás</button></div>
+    </div>
+    <div class="step" id="step-2c">
+      <div class="step-title">¿Qué información necesitas?</div>
+      <div class="step-sub">Selecciona lo que más te interesa conocer</div>
+      <div class="options">
+        <button class="opt" onclick="pick(2,'info_tipo','requisitos',this)"><div class="opt-icon"><span class="material-icons">assignment</span></div><div class="opt-body"><div class="opt-title">Requisitos para el crédito</div><div class="opt-desc">Quiero saber qué necesito para aplicar</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+        <button class="opt" onclick="pick(2,'info_tipo','tasas',this)"><div class="opt-icon"><span class="material-icons">attach_money</span></div><div class="opt-body"><div class="opt-title">Tasas y cuotas</div><div class="opt-desc">Información sobre intereses y pagos</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+        <button class="opt" onclick="pick(2,'info_tipo','general',this)"><div class="opt-icon"><span class="material-icons">support_agent</span></div><div class="opt-body"><div class="opt-title">Asesoría personalizada</div><div class="opt-desc">Quiero hablar con un experto</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+      </div>
+      <div class="btn-row"><button class="btn btn-outline" onclick="go(1)"><span class="material-icons">arrow_back</span> Atrás</button></div>
+    </div>
+    <div class="step" id="step-3">
+      <div class="step-title">¿Cuánto puedes pagar mensualmente?</div>
+      <div class="step-sub">Selecciona el rango que mejor se ajuste a tu presupuesto</div>
+      <div class="options">
+        <button class="opt opt-payment" onclick="pick(3,'pago_mensual','menos-800',this)"><div class="pay-amount">&lt; $800.000</div><div class="pay-label">Menos de $800.000 mensuales</div></button>
+        <button class="opt opt-payment" onclick="pick(3,'pago_mensual','800-1200',this)"><div class="pay-amount">$800.000 – $1.200.000</div><div class="pay-label">Entre $800.000 y $1.200.000 mensuales</div></button>
+        <button class="opt opt-payment" onclick="pick(3,'pago_mensual','mas-1200',this)"><div class="pay-amount">&gt; $1.200.000</div><div class="pay-label">Más de $1.200.000 mensuales</div></button>
+      </div>
+      <div class="btn-row"><button class="btn btn-outline" onclick="goBack2()"><span class="material-icons">arrow_back</span> Atrás</button></div>
+    </div>
+    <div class="step" id="step-4">
+      <div class="step-title">¿Qué tan pronto necesitas el crédito?</div>
+      <div class="step-sub">Tu respuesta nos ayuda a priorizar tu solicitud</div>
+      <div class="options">
+        <button class="opt" onclick="pick(4,'urgencia','ya',this)"><div class="opt-icon"><span class="material-icons">bolt</span></div><div class="opt-body"><div class="opt-title">Lo necesito ya</div><div class="opt-desc">Tengo prisa, quiero empezar cuanto antes</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+        <button class="opt" onclick="pick(4,'urgencia','mes',this)"><div class="opt-icon"><span class="material-icons">calendar_today</span></div><div class="opt-body"><div class="opt-title">Este mes</div><div class="opt-desc">Planeo hacerlo en las próximas semanas</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+        <button class="opt" onclick="pick(4,'urgencia','averiguando',this)"><div class="opt-icon"><span class="material-icons">search</span></div><div class="opt-body"><div class="opt-title">Solo estoy averiguando</div><div class="opt-desc">Aún estoy en proceso de decisión</div></div><div class="opt-check"><span class="material-icons">check</span></div></button>
+      </div>
+      <div class="btn-row"><button class="btn btn-outline" onclick="go(3)"><span class="material-icons">arrow_back</span> Atrás</button></div>
+    </div>
+    <div class="step" id="result-alto">
+      <div class="result-wrap">
+        <div class="result-icon-circle alto"><span class="material-icons">verified</span></div>
+        <div class="result-badge alto"><span class="material-icons">star</span>Perfil Ideal</div>
+        <div class="result-title">¡Tienes un perfil ideal para financiar tu taxi!</div>
+        <div class="result-desc">Calificas para nuestras mejores opciones. Un asesor te contactará en menos de 30 minutos.</div>
+        <div class="benefits-box"><div class="benefits-box-title">Lo que obtienes</div><div class="benefit-row"><span class="material-icons">check_circle</span>Tasas preferenciales por tu excelente perfil</div><div class="benefit-row"><span class="material-icons">check_circle</span>Respuesta en menos de 24 horas</div><div class="benefit-row"><span class="material-icons">check_circle</span>Asesor personalizado durante todo el proceso</div></div>
+        <form class="contact-form" onsubmit="submitForm(event,'alto')">
+          <div class="form-title">Déjanos tus datos para contactarte</div>
+          <div class="form-group"><label class="form-label">Nombre completo *</label><div class="form-input-wrap"><span class="material-icons">person</span><input type="text" placeholder="Ej: Juan Pérez" required></div></div>
+          <div class="form-group"><label class="form-label">Teléfono de contacto *</label><div class="form-input-wrap"><span class="material-icons">phone</span><input type="tel" placeholder="Ej: 312 456 7890" required></div></div>
+          <div class="form-group"><label class="form-label">Correo electrónico</label><div class="form-input-wrap"><span class="material-icons">mail</span><input type="email" placeholder="Ej: juan@correo.com"></div></div>
+          <button type="submit" class="btn btn-red btn-full">Solicitar crédito ahora <span class="material-icons">arrow_forward</span></button>
+        </form>
+      </div>
+    </div>
+    <div class="step" id="result-medio">
+      <div class="result-wrap">
+        <div class="result-icon-circle medio"><span class="material-icons">thumb_up</span></div>
+        <div class="result-badge medio"><span class="material-icons">trending_up</span>Buen Perfil</div>
+        <div class="result-title">Podrías aplicar a un crédito con Clave 2000</div>
+        <div class="result-desc">Tu perfil es bueno y tenemos opciones para ti. Un asesor evaluará tu caso.</div>
+        <div class="benefits-box"><div class="benefits-box-title">Próximos pasos</div><div class="benefit-row"><span class="material-icons">check_circle</span>Evaluación personalizada de tu caso</div><div class="benefit-row"><span class="material-icons">check_circle</span>Te presentaremos múltiples opciones</div><div class="benefit-row"><span class="material-icons">check_circle</span>Sin compromiso ni costo de análisis</div></div>
+        <form class="contact-form" onsubmit="submitForm(event,'medio')">
+          <div class="form-title">Déjanos tus datos para contactarte</div>
+          <div class="form-group"><label class="form-label">Nombre completo *</label><div class="form-input-wrap"><span class="material-icons">person</span><input type="text" placeholder="Ej: Juan Pérez" required></div></div>
+          <div class="form-group"><label class="form-label">Teléfono de contacto *</label><div class="form-input-wrap"><span class="material-icons">phone</span><input type="tel" placeholder="Ej: 312 456 7890" required></div></div>
+          <div class="form-group"><label class="form-label">Correo electrónico</label><div class="form-input-wrap"><span class="material-icons">mail</span><input type="email" placeholder="Ej: juan@correo.com"></div></div>
+          <button type="submit" class="btn btn-navy btn-full">Hablar con un asesor <span class="material-icons">arrow_forward</span></button>
+        </form>
+      </div>
+    </div>
+    <div class="step" id="result-bajo">
+      <div class="result-wrap">
+        <div class="result-icon-circle bajo"><span class="material-icons">lightbulb</span></div>
+        <div class="result-badge bajo"><span class="material-icons">support_agent</span>Asesoría Gratuita</div>
+        <div class="result-title">Te ayudamos a prepararte para tu crédito</div>
+        <div class="result-desc">Te asesoramos gratuitamente para que puedas cumplir tus metas pronto.</div>
+        <div class="benefits-box"><div class="benefits-box-title">Te ayudamos con</div><div class="benefit-row"><span class="material-icons">check_circle</span>Un plan personalizado de preparación</div><div class="benefit-row"><span class="material-icons">check_circle</span>Consejos para mejorar tu perfil crediticio</div><div class="benefit-row"><span class="material-icons">check_circle</span>Seguimiento hasta que estés listo</div></div>
+        <form class="contact-form" onsubmit="submitForm(event,'bajo')">
+          <div class="form-title">Déjanos tus datos para asesorarte</div>
+          <div class="form-group"><label class="form-label">Nombre completo *</label><div class="form-input-wrap"><span class="material-icons">person</span><input type="text" placeholder="Ej: Juan Pérez" required></div></div>
+          <div class="form-group"><label class="form-label">Teléfono de contacto *</label><div class="form-input-wrap"><span class="material-icons">phone</span><input type="tel" placeholder="Ej: 312 456 7890" required></div></div>
+          <div class="form-group"><label class="form-label">Correo electrónico</label><div class="form-input-wrap"><span class="material-icons">mail</span><input type="email" placeholder="Ej: juan@correo.com"></div></div>
+          <button type="submit" class="btn btn-navy btn-full">Recibir asesoría gratuita <span class="material-icons">arrow_forward</span></button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="confetti-layer" id="confetti-layer"></div>
+<script>
+  const state={objetivo:null,subcategoria:null,pago_mensual:null,urgencia:null};
+  function setProgress(n){const pct=Math.round((n/4)*100);document.getElementById('prog-label').textContent=`Paso ${n} de 4`;document.getElementById('prog-pct').textContent=pct+'%';document.getElementById('prog-fill').style.width=pct+'%';}
+  function showStep(id){document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active');}
+  function pick(step,field,value,el){state[field]=value;el.closest('.options,.options-binary').querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');setTimeout(()=>advance(step,value),220);}
+  function advance(step,value){
+    if(step===1){setProgress(2);if(value==='primer-taxi')showStep('step-2a');else if(value==='renovar')showStep('step-2b');else showStep('step-2c');}
+    else if(step===2){setProgress(3);showStep('step-3');}
+    else if(step===3){setProgress(4);showStep('step-4');}
+    else if(step===4){setProgress(4);classify();}
+  }
+  function go(n){if(n===1){setProgress(1);showStep('step-1');}if(n===3){setProgress(3);showStep('step-3');}}
+  function goBack2(){setProgress(2);const obj=state.objetivo;if(obj==='primer-taxi')showStep('step-2a');else if(obj==='renovar')showStep('step-2b');else showStep('step-2c');}
+  function classify(){const{objetivo,pago_mensual,urgencia}=state;let s=0;if(objetivo==='primer-taxi'||objetivo==='renovar')s+=2;if(pago_mensual==='mas-1200')s+=2;else if(pago_mensual==='800-1200')s+=1;if(urgencia==='ya')s+=2;else if(urgencia==='mes')s+=1;const nivel=s>=5?'alto':s>=3?'medio':'bajo';document.querySelector('.card-header').style.display='none';showStep('result-'+nivel);if(nivel==='alto')launchConfetti();}
+  function submitForm(e,nivel){e.preventDefault();const btn=e.target.querySelector('button[type=submit]');btn.textContent='¡Solicitud enviada!';btn.disabled=true;btn.style.background='#00A63E';}
+  function launchConfetti(){const colors=['#C63025','#243C4F','#FDE5E3','#9FC3DA','#fff'];const c=document.getElementById('confetti-layer');c.innerHTML='';for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.animationDelay=(Math.random()*1.2)+'s';p.style.animationDuration=(2+Math.random())+'s';c.appendChild(p);}setTimeout(()=>{c.innerHTML='';},4000);}
+</script>
+</body>
+</html>
