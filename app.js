@@ -2,10 +2,10 @@
    ESTADO GLOBAL
    ============================================================ */
 const state = {
-  objetivo: null,
-  subcategoria: null,
-  pago_mensual: null,
-  urgencia: null,
+  actividad: null,            // 'conductor' | 'propietario'
+  objetivo_propietario: null, // 'comprar' | 'reparar' | 'renovar'
+  urgencia: null,             // 'ya' | 'mes' | 'averiguando'
+  cuota_inicial: null,        // 'no-tengo' | '8-10' | 'mas-10'
 };
 
 console.log('Asistente de Crédito cargado correctamente');
@@ -14,7 +14,7 @@ console.log('Asistente de Crédito cargado correctamente');
    INICIALIZACIÓN
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
-  setProgress(1);
+  goTo('step-1');
   bindOptionButtons();
   bindNavButtons();
   bindForms();
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function bindLogoFallback() {
   const logo = document.getElementById('brand-logo');
   const fallback = document.getElementById('logo-fb');
+  if (!logo || !fallback) return;
 
   logo.addEventListener('error', () => {
     logo.style.display = 'none';
@@ -44,9 +45,7 @@ function bindOptionButtons() {
     btn.addEventListener('click', () => {
       const step  = parseInt(btn.dataset.step);
       const field = btn.dataset.field;
-      // Convierte "true"/"false" a booleano; el resto se usa como string
-      const raw   = btn.dataset.value;
-      const value = raw === 'true' ? true : raw === 'false' ? false : raw;
+      const value = btn.dataset.value;
 
       pick(step, field, value, btn);
     });
@@ -55,22 +54,33 @@ function bindOptionButtons() {
 
 /* ============================================================
    EVENT LISTENERS — BOTONES DE NAVEGACIÓN (Atrás)
-   Lee data-action para saber a qué paso volver.
+   La acción "back-from-3" decide a dónde volver según el flujo.
    ============================================================ */
 function bindNavButtons() {
   document.querySelectorAll('[data-action]').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       const action = btn.dataset.action;
-      if (action === 'go-1') go(1);
-      else if (action === 'go-3') go(3);
-      else if (action === 'goBack2') goBack2();
+      if (action === 'back-from-2') {
+        goTo('step-1');
+      } else if (action === 'back-from-3') {
+        // Si es propietario vuelve al paso de objetivo; si es conductor, al paso 1.
+        if (state.actividad === 'propietario') goTo('step-2');
+        else goTo('step-1');
+      } else if (action === 'back-from-4') {
+        goTo('step-3');
+      } else if (action === 'back-from-result') {
+        // Volver del resultado al último paso (cuota inicial) para permitir corregir.
+        const header = document.querySelector('.card-header');
+        if (header) header.style.display = '';
+        goTo('step-4');
+      }
     });
   });
 }
 
 /* ============================================================
    EVENT LISTENERS — FORMULARIOS DE CONTACTO
-   Lee data-nivel para identificar el resultado.
    ============================================================ */
 function bindForms() {
   document.querySelectorAll('.contact-form').forEach(form => {
@@ -82,12 +92,31 @@ function bindForms() {
 
 /* ============================================================
    PROGRESO
+   Conductor → 3 pasos totales | Propietario → 4 pasos totales
    ============================================================ */
-function setProgress(n) {
-  const pct = Math.round((n / 4) * 100);
-  document.getElementById('prog-label').textContent = `Paso ${n} de 4`;
-  document.getElementById('prog-pct').textContent   = pct + '%';
-  document.getElementById('prog-fill').style.width  = pct + '%';
+function totalSteps() {
+  return state.actividad === 'propietario' ? 4 : 3;
+}
+
+function progressFor(stepId) {
+  const total = totalSteps();
+  let n = 1;
+  if (stepId === 'step-1') n = 1;
+  else if (stepId === 'step-2') n = 2;
+  else if (stepId === 'step-3') n = state.actividad === 'propietario' ? 3 : 2;
+  else if (stepId === 'step-4') n = total;
+  return { n, total };
+}
+
+function setProgress(stepId) {
+  const { n, total } = progressFor(stepId);
+  const pct = Math.round((n / total) * 100);
+  const lbl = document.getElementById('prog-label');
+  const pctEl = document.getElementById('prog-pct');
+  const fill = document.getElementById('prog-fill');
+  if (lbl)   lbl.textContent  = `Paso ${n} de ${total}`;
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (fill)  fill.style.width  = pct + '%';
 }
 
 /* ============================================================
@@ -99,17 +128,9 @@ function showStep(id) {
   if (el) el.classList.add('active');
 }
 
-function go(n) {
-  if (n === 1) { setProgress(1); showStep('step-1'); }
-  if (n === 3) { setProgress(3); showStep('step-3'); }
-}
-
-function goBack2() {
-  setProgress(2);
-  const obj = state.objetivo;
-  if (obj === 'primer-taxi') showStep('step-2a');
-  else if (obj === 'renovar') showStep('step-2b');
-  else showStep('step-2c');
+function goTo(stepId) {
+  setProgress(stepId);
+  showStep(stepId);
 }
 
 /* ============================================================
@@ -130,21 +151,21 @@ function pick(step, field, value, el) {
 
 /* ============================================================
    LÓGICA DE TRANSICIÓN
+   Paso 1 → si "conductor" salta a paso 3 (urgencia)
+            si "propietario" va a paso 2 (objetivo del propietario)
+   Paso 2 → siempre va a paso 3 (urgencia)
+   Paso 3 → siempre va a paso 4 (cuota inicial)
+   Paso 4 → ejecuta classify()
    ============================================================ */
 function advance(step, value) {
   if (step === 1) {
-    setProgress(2);
-    if (value === 'primer-taxi') showStep('step-2a');
-    else if (value === 'renovar') showStep('step-2b');
-    else showStep('step-2c');
+    if (value === 'propietario') goTo('step-2');
+    else goTo('step-3'); // conductor salta directamente a urgencia
   } else if (step === 2) {
-    setProgress(3);
-    showStep('step-3');
+    goTo('step-3');
   } else if (step === 3) {
-    setProgress(4);
-    showStep('step-4');
+    goTo('step-4');
   } else if (step === 4) {
-    setProgress(4);
     classify();
   }
 }
@@ -152,24 +173,38 @@ function advance(step, value) {
 /* ============================================================
    CLASIFICACIÓN DEL LEAD
    Scoring:
-     objetivo primer-taxi / renovar → +2
-     pago mas-1200 → +2 | 800-1200 → +1
-     urgencia ya → +2 | mes → +1
-   alto ≥ 5 | medio ≥ 3 | bajo < 3
+     urgencia ya → +3 | mes → +2 | averiguando → 0
+     cuota mas-10 → +3 | 8-10 → +2 | no-tengo → 0
+     conductor → +1
+     propietario+comprar → +2 | propietario+renovar → +2 | propietario+reparar → +1
+   alto ≥ 7 | medio ≥ 4 | bajo < 4
    ============================================================ */
 function classify() {
-  const { objetivo, pago_mensual, urgencia } = state;
+  const { actividad, objetivo_propietario, urgencia, cuota_inicial } = state;
   let score = 0;
 
-  if (objetivo === 'primer-taxi' || objetivo === 'renovar') score += 2;
-  if (pago_mensual === 'mas-1200') score += 2;
-  else if (pago_mensual === '800-1200') score += 1;
-  if (urgencia === 'ya') score += 2;
-  else if (urgencia === 'mes') score += 1;
+  // Urgencia
+  if (urgencia === 'ya') score += 3;
+  else if (urgencia === 'mes') score += 2;
 
-  const nivel = score >= 5 ? 'alto' : score >= 3 ? 'medio' : 'bajo';
+  // Cuota inicial
+  if (cuota_inicial === 'mas-10') score += 3;
+  else if (cuota_inicial === '8-10') score += 2;
 
-  document.querySelector('.card-header').style.display = 'none';
+  // Actividad / objetivo
+  if (actividad === 'conductor') {
+    score += 1;
+  } else if (actividad === 'propietario') {
+    if (objetivo_propietario === 'comprar' || objetivo_propietario === 'renovar') score += 2;
+    else if (objetivo_propietario === 'reparar') score += 1;
+  }
+
+  const nivel = score >= 7 ? 'alto' : score >= 4 ? 'medio' : 'bajo';
+  state.nivel = nivel;
+
+  const header = document.querySelector('.card-header');
+  if (header) header.style.display = 'none';
+
   showStep('result-' + nivel);
   if (nivel === 'alto') launchConfetti();
 }
@@ -191,6 +226,7 @@ function submitForm(e, nivel) {
 function launchConfetti() {
   const colors    = ['#C63025', '#243C4F', '#FDE5E3', '#9FC3DA', '#fff'];
   const container = document.getElementById('confetti-layer');
+  if (!container) return;
   container.innerHTML = '';
 
   for (let i = 0; i < 60; i++) {
