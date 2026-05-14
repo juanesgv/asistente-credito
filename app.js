@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bindOptionButtons();
   bindNavButtons();
   bindForms();
+  bindLocationSelects();
   bindLogoFallback();
 });
 
@@ -87,6 +88,53 @@ function bindForms() {
     form.addEventListener('submit', e => {
       submitForm(e, form.dataset.nivel);
     });
+
+    // Limpiar estado de error de los consentimientos al marcarlos
+    form.querySelectorAll('.form-consents input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const group = cb.closest('.form-consents');
+        if (!group) return;
+        const allChecked = Array.from(group.querySelectorAll('input[type="checkbox"]'))
+          .every(c => c.checked);
+        if (allChecked) {
+          group.classList.remove('has-error');
+          const err = group.querySelector('.form-error');
+          if (err) err.classList.remove('visible');
+        }
+      });
+    });
+  });
+}
+
+/* ============================================================
+   EVENT LISTENERS — DEPARTAMENTO / CIUDAD
+   Filtra las ciudades según el departamento seleccionado.
+   ============================================================ */
+function bindLocationSelects() {
+  document.querySelectorAll('.contact-form').forEach(form => {
+    const dpto   = form.querySelector('select[name=departamento]');
+    const ciudad = form.querySelector('select[name=ciudad]');
+    if (!dpto || !ciudad) return;
+
+    const cities = Array.from(ciudad.querySelectorAll('option[data-dpto]'))
+      .map(opt => ({ dpto: opt.dataset.dpto, value: opt.value, label: opt.textContent }));
+
+    function refresh() {
+      const sel = dpto.value;
+      ciudad.innerHTML = '<option value="" selected disabled>Ciudad...</option>';
+      cities
+        .filter(c => c.dpto === sel)
+        .forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.value;
+          opt.textContent = c.label;
+          ciudad.appendChild(opt);
+        });
+      ciudad.disabled = !sel;
+    }
+
+    refresh();
+    dpto.addEventListener('change', refresh);
   });
 }
 
